@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+
 import './App.css';
+import InicioSesion from './COMPONENT/InicioSesion/InicioSesion';
+import {Route,Switch, Router} from 'react-router-dom';
+import NuevoUsuario from './COMPONENT/NuevoUsuario/NuevoUsuario';
+import {createBrowserHistory} from 'history';
+import Home from './COMPONENT/SistemaGestion/SistemaGestion'
+import SistemaGestion from './COMPONENT/SistemaGestion/SistemaGestion';
 
 function App() {
+  const history = createBrowserHistory();
   return (
+    
+    <Router history={history}>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+      <Switch>
+        <Route path='/Home' component={SistemaGestion}/>
+        <Route path='/NuevoUsuario' component={NuevoUsuario}/>
+        <Route path='/' component={InicioSesion}></Route>
+      </Switch>
+      
     </div>
+    </Router>
   );
 }
 
