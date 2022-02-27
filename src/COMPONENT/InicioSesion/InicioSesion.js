@@ -55,7 +55,7 @@ export default function InicioSesion() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_episode/339977/339977-1631534931989-2ade52e3b1aa6.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

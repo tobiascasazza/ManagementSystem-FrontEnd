@@ -9,20 +9,19 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItems from './listItems';
 import Inicio from './Inicio';
 import Producto from './Productos';
 import Ventas from './Ventas';
 import Reportes from './Reportes';
 import Usuario from './Usuario';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useHistory } from 'react-router';
+import logocoder from '../../Imagenes/logocoder.png'
 
 function Copyright(props) {
   return (
@@ -82,10 +81,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     },
   }),
 );
-
 const mdTheme = createTheme();
 
-export default function SistemaGestion() {
+
+
+
+export default function SistemaGestion(props) {
   
   const [opcion, setOpcion] = React.useState(0)
   const [pagina, setPagina] = React.useState(<Inicio/>)
@@ -93,6 +94,8 @@ export default function SistemaGestion() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const history = useHistory();
 
   React.useEffect(()=>{
     switch(opcion){
@@ -113,6 +116,10 @@ export default function SistemaGestion() {
         break;
     }
   },[opcion])
+
+  function OnClickLogOut(){
+    history.push("../InicioSesion/InicioSesion")
+  }
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -123,6 +130,7 @@ export default function SistemaGestion() {
               pr: '24px', // keep right padding when drawer closed
             }}
           >
+            
             <IconButton
               edge="start"
               color="inherit"
@@ -144,10 +152,8 @@ export default function SistemaGestion() {
             >
               MI SISTEMA DE GESTION
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton color="inherit" onClick={OnClickLogOut}>
+              <LogoutIcon/>
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -160,6 +166,9 @@ export default function SistemaGestion() {
               px: [1],
             }}
           >
+            <Typography fontFamily={'fantasy'} align='left'>By</Typography >
+            <img src={logocoder} alt='logoCoder' width="60%" height="60%" ></img>
+ 
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
