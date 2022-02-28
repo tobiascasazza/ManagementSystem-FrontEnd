@@ -15,10 +15,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItems from './listItems';
 import Inicio from './Inicio';
-import Producto from './Productos';
+import Productos from './Productos';
 import Ventas from './Ventas';
 import Reportes from './Reportes';
-import Usuario from './Usuario';
+import DatosUsuario from './DatosUsuario';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useHistory } from 'react-router';
 import logocoder from '../../Imagenes/logocoder.png'
@@ -100,10 +100,10 @@ export default function SistemaGestion(props) {
   React.useEffect(()=>{
     switch(opcion){
       case 0:
-        setPagina(<Inicio/>)
+        setPagina(<Inicio setOpcion={setOpcion}/>)
         break;
       case 1:
-        setPagina(<Producto/>)
+        setPagina(<Productos/>)
         break;
       case 2:
         setPagina(<Ventas/>)
@@ -112,7 +112,7 @@ export default function SistemaGestion(props) {
         setPagina(<Reportes/>)
         break;
       case 4:
-        setPagina(<Usuario/>)
+        setPagina(<DatosUsuario/>)
         break;
     }
   },[opcion])

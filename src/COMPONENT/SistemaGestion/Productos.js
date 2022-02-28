@@ -10,23 +10,24 @@ import {
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CreateIcon from '@mui/icons-material/Create';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Modal, Box } from '@mui/material';
-import { margin } from '@mui/system';
+import { useState, useEffect } from 'react'
+import { Producto } from './Models/Models.tsx';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'Descripcion', headerName: 'Descripcion', width: 130 },
-    { field: 'Costo', headerName: 'Costo', width: 130, type: 'number', },
+    { field: 'descripcion', headerName: 'Descripcion', width: 130 },
+    { field: 'costo', headerName: 'Costo', width: 130, type: 'number', },
     {
-        field: 'PrecioVenta',
+        field: 'precioVenta',
         headerName: 'Precio Venta',
         type: 'number',
         width: 130,
     },
     {
-        field: 'Stock',
+        field: 'stock',
         headerName: 'Stock',
         type: 'number',
         width: 130
@@ -49,15 +50,15 @@ const style = {
 };
 
 const rows = [
-    { id: 1, Descripcion: 'Snow', Costo: 400, PrecioVenta: 3500, Stock: 10 },
-    { id: 2, Descripcion: 'Lannister', Costo: 400, PrecioVenta: 4200, Stock: 10 },
-    { id: 3, Descripcion: 'Lannister', Costo: 350, PrecioVenta: 4500, Stock: 10 },
-    { id: 4, Descripcion: 'Stark', Costo: 200, PrecioVenta: 1600, Stock: 10 },
-    { id: 5, Descripcion: 'Targaryen', Costo: 100, PrecioVenta: 1000, Stock: 10 },
-    { id: 6, Descripcion: 'Melisandre', Costo: 250, PrecioVenta: 15000, Stock: 10 },
-    { id: 7, Descripcion: 'Clifford', Costo: 150, PrecioVenta: 4400, Stock: 10 },
-    { id: 8, Descripcion: 'Frances', Costo: 120, PrecioVenta: 3600, Stock: 10 },
-    { id: 9, Descripcion: 'Roxie', Costo: 300, PrecioVenta: 6500, Stock: 10 },
+    { id: 1, descripcion: 'Snow', costo: 400, precioVenta: 3500, stock: 10 },
+    { id: 2, descripcion: 'Lannister', costo: 400, precioVenta: 4200, stock: 10 },
+    { id: 3, descripcion: 'Lannister', costo: 350, precioVenta: 4500, stock: 10 },
+    { id: 4, descripcion: 'Stark', costo: 200, precioVenta: 1600, stock: 10 },
+    { id: 5, descripcion: 'Targaryen', costo: 100, precioVenta: 1000, stock: 10 },
+    { id: 6, descripcion: 'Melisandre', costo: 250, precioVenta: 15000, stock: 10 },
+    { id: 7, descripcion: 'Clifford', costo: 150, precioVenta: 4400, stock: 10 },
+    { id: 8, descripcion: 'Frances', costo: 120, precioVenta: 3600, stock: 10 },
+    { id: 9, descripcion: 'Roxie', costo: 300, precioVenta: 6500, stock: 10 },
 ];
 function CustomToolbar() {
     return (
@@ -71,20 +72,43 @@ function CustomToolbar() {
 }
 
 
-export default function Producto() {
-    const [rowClicked, setRowClicked] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
+export default function Productos() {
+    const [rowClicked, setRowClicked] = useState(new Producto());
+    const [openCrear, setOpenCrear] = useState(false);
+    const [openModificar, setOpenModificar] = useState(false);
+    const [openEliminar, setOpenEliminar] = useState(false);
 
+    useEffect(() => {
+        console.log(rowClicked)
+    },[rowClicked])
     const onRowClick = (e) => {
-        setRowClicked(e.id)
+        console.log(e);
+        setRowClicked(new Producto(e.row.id, e.row.descripcion, e.row.costo, e.row.precioVenta, e.row.stock))
     }
     const modalCrearOpen = () => {
-        setOpen(true);
+        setOpenCrear(true);
     };
     const modalCrearClose = () => {
-        setOpen(false);
+        setOpenCrear(false);
     };
 
+    const modalModificarOpen = () => {
+        setOpenModificar(true);
+    };
+    const modalModificarClose = () => {
+        setOpenModificar(false);
+    };
+    const modalEliminarOpen = () => {
+        setOpenEliminar(true);
+    };
+    const modalEliminarClose = () => {
+        setOpenEliminar(false);
+    };
+
+    const onChangeProducto = (e) => {
+        const { name, value } = e.target;
+        setRowClicked({...Producto, [name]: value})
+    };
 
     return (
         <>
@@ -92,8 +116,8 @@ export default function Producto() {
             <div style={{ height: 400, width: '100%' }}>
                 <Grid container direction="row" justifyContent="flex-end">
                     <Grid margin='10px'><Button variant="contained" startIcon={<AddCircleOutlineIcon />} onClick={modalCrearOpen}>Crear</Button></Grid>
-                    <Grid margin='10px'><Button variant="contained" startIcon={<CreateIcon />} disabled={rowClicked == 0}>Modificar</Button></Grid>
-                    <Grid margin='10px'><Button variant="contained" startIcon={<DeleteForeverIcon />} disabled={rowClicked == 0}>Eliminar</Button></Grid>
+                    <Grid margin='10px'><Button variant="contained" startIcon={<CreateIcon />} disabled={rowClicked.id == undefined} onClick={modalModificarOpen} >Modificar</Button></Grid>
+                    <Grid margin='10px'><Button variant="contained" startIcon={<DeleteForeverIcon />} disabled={rowClicked.id == undefined} onClick={modalEliminarOpen}>Eliminar</Button></Grid>
                 </Grid>
                 <DataGrid
                     rows={rows}
@@ -110,7 +134,7 @@ export default function Producto() {
 
             
             <Modal
-                open={open}
+                open={openCrear}
                 onClose={modalCrearClose}
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
@@ -162,10 +186,99 @@ export default function Producto() {
                             variant="outlined"
                             defaultValue={0}
                             InputLabelProps={{ shrink: true }}
-
                         />
                     </Grid>
                     <Button variant="contained">Crear</Button>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openModificar}
+                onClose={modalModificarClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <Box sx={{ ...style, width: 520 }}>
+                    <h2 id="parent-modal-title">Modificar Producto</h2>
+                    <h4>Nombre del producto</h4>
+                    <Grid container direction="row" justifyContent="space-between" >
+
+                        <Grid item marginBottom={2}>
+                            <TextField
+                                id="outlined-basic"
+                                name="descripcion"
+                                label="Descripcion"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                value={rowClicked.descripcion}
+                                onChange={onChangeProducto}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <h4>Precios</h4>
+                    <Grid container direction="row" justifyContent="space-between" >
+                        <Grid item marginBottom={2}>
+                            <TextField type="number"
+                                id="outlined-basic"
+                                label="Costo"
+                                name="costo"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                value={rowClicked.costo}
+                                onChange={onChangeProducto}
+                            />
+                        </Grid>
+
+                        <Grid item marginBottom={2}>
+                            <TextField
+                                type="number"
+                                id="outlined-basic"
+                                label="Precio de Venta"
+                                name="precioVenta"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                defaultValue={rowClicked.precioVenta}
+                                onChange={onChangeProducto}
+                            />
+                        </Grid>
+                    </Grid>
+                    <h4>Stock</h4>
+                    <Grid item marginBottom={2}>
+                        <TextField type="number"
+                            id="outlined-basic"
+                            label="Stock"
+                            name="stock"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            value={rowClicked.stock}
+                            onChange={onChangeProducto}
+                        />
+                    </Grid>
+                    <Button variant="contained">Modificar</Button>
+                </Box>
+            </Modal>
+            <Modal
+                open={openEliminar}
+                onClose={modalEliminarClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <Box sx={{ ...style, width: 520 }}>
+                    <h4>¿Seguro que quiere eliminar el siguiente producto?</h4>
+                        <Grid xl={12} xs={12}
+                         boxShadow='0px 0px 30px 0px #757575'
+                            justifyContent="center"
+                            alignItems="center"
+                            borderColor="grey">
+                        <Typography align='center'><b>Id:</b> {rowClicked.id}</Typography>
+                        <Typography align='center'><b>Descripcion:</b> {rowClicked.descripcion} </Typography>
+                        <Typography align='center'><b>Costo:</b> {rowClicked.costo} </Typography>
+                        <Typography align='center'><b>Precio de Venta:</b> {rowClicked.precioVenta} </Typography>
+                        <Typography align='center'><b>Stock:</b> {rowClicked.stock} </Typography>
+                        </Grid>
+                    <Grid textAlign={'center'} marginTop='5%'><Button variant="contained" >Eliminar</Button></Grid>
+                    
                 </Box>
             </Modal>
         </>
