@@ -55,4 +55,15 @@ export class Venta{
 export class ProductoVendido{
     id: number = 0;
     stock: string = "";
+    idProducto: number = 0;
+    idVenta: number = 0;
+    constructor(id: number,
+        stock: string,
+        idProducto: number,
+        idVenta: number){
+            this.id = id;
+            this.stock = stock;
+            this.idProducto = idProducto;
+            this.idVenta = idVenta;
+        }
 }

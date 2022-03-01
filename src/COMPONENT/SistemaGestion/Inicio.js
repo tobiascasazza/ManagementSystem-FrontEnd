@@ -32,7 +32,7 @@ export default function Inicio(props) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container xl={12} xs={12}
+            <Grid container xl={12} 
                 className={classes.Grid}
                 boxShadow='0px 0px 30px -15px #757575'
                 justifyContent="center"
@@ -42,7 +42,7 @@ export default function Inicio(props) {
                     <Typography className={classes.tipo1} textAlign='end'>HOLA TOBIAS, BIENVENIDO A TU CUENTA</Typography>
                 </Grid>
 
-                <Grid conteiner
+                <Grid container
                     container
                     direction="row"
                     justifyContent="center"

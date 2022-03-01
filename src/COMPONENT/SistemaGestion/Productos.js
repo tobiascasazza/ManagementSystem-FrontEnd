@@ -78,11 +78,7 @@ export default function Productos() {
     const [openModificar, setOpenModificar] = useState(false);
     const [openEliminar, setOpenEliminar] = useState(false);
 
-    useEffect(() => {
-        console.log(rowClicked)
-    },[rowClicked])
     const onRowClick = (e) => {
-        console.log(e);
         setRowClicked(new Producto(e.row.id, e.row.descripcion, e.row.costo, e.row.precioVenta, e.row.stock))
     }
     const modalCrearOpen = () => {
@@ -266,7 +262,7 @@ export default function Productos() {
             >
                 <Box sx={{ ...style, width: 520 }}>
                     <h4>¿Seguro que quiere eliminar el siguiente producto?</h4>
-                        <Grid xl={12} xs={12}
+                        <Grid xl={12} 
                          boxShadow='0px 0px 30px 0px #757575'
                             justifyContent="center"
                             alignItems="center"
