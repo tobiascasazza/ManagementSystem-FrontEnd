@@ -11,12 +11,13 @@ import {
   } from "@mui/x-data-grid";
 import { Producto, Venta } from './Models/Models.tsx';
 import { ProductoVendido } from './Models/Models.tsx';
-import useEffect
+import { useEffect } from 'react';
 
 export default function Reportes() {
 
     const [abrirModal, setAbrirModal] = React.useState(false)
-    const [rows, setRows] = React.useState([]) 
+    const [rowsInicial, setRowsInicial] = React.useState([{id: 0, cantProductos: 0, TotalFacturado: 0}]) 
+    const [rowsModal, setRowsModal] = React.useState([]) 
 
     const productos = [
         new Producto(1, 'Snow', 400, 3500, 10),
@@ -51,8 +52,8 @@ export default function Reportes() {
 
     const columns = [
         { field: "id", headerName: "Id", width: 70 },
-        { field: "cantProductos", headerName: "Cant. Productos", width: 200 },
-        { field: "Total", headerName: "Total", width: 130 },
+        { field: "cantProductos", headerName: "Cant. Productos Vendidos", width: 200 },
+        { field: "TotalFacturado", headerName: "Total Facturado", width: 130 },
         {
             field: "Herramientas",
             headerName: "Herramientas",
@@ -62,10 +63,56 @@ export default function Reportes() {
     ];
 
     useEffect(() => {
-        productosVendidos.forEach(prod => {
-            
+        let rowsActualizados = [];
+        ventas.forEach(venta => {
+            let row = {id: venta.id, cantProductos: 0, TotalFacturado: 0};
+            let productos = [];
+            let cuentaFacturado = 0;
+            let cuentaProductos = 0;
+
+            row.id = venta.id
+            productos = GetProductosPorVenta(venta.id);
+            row.cantProductos = productos.length;
+
+            productos.forEach(producto => {
+                cuentaProductos = cuentaProductos + producto[1]; 
+            })
+            row.cantProductos = cuentaProductos;
+
+            productos.forEach(producto => {
+                cuentaFacturado = cuentaFacturado + (producto[0].precioVenta * producto[1]); 
+            })
+            row.TotalFacturado = cuentaFacturado;
+
+           rowsActualizados.push(row)
+
         });
+        console.log(rowsActualizados)
+        setRowsInicial(rowsActualizados)
+        
     },[])
+
+
+    function GetProductosPorVenta(num){
+        let productosPorVenta = [];
+        
+        productosVendidos.forEach(prod => {
+            if(prod.idVenta == num){
+                let stockVendido = prod.stock;
+                productos.forEach(prodReal => {
+                    if(prodReal.id == prod.idProducto){
+                        productosPorVenta.push([prodReal, stockVendido])
+                    }
+                });
+            }
+        });
+
+        return productosPorVenta;
+    }
+
+    
+
+
     function onClickVerButton() {
         setAbrirModal(true)
     }
@@ -88,7 +135,7 @@ export default function Reportes() {
                                         Toolbar: CustomToolbar,
                                     }}
                                     pageSize={5}
-                                    rows={productos}
+                                    rows={rowsInicial}
                                     rowsPerPageOptions={[5]}
                                 />
                             </div>
