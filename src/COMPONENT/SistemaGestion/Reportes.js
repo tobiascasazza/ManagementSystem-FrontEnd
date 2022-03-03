@@ -1,7 +1,8 @@
-import { Card, CardContent, Grid, Typography, Box} from '@mui/material';
+import { Card, CardContent, Grid, Typography, Box, TextField, Button} from '@mui/material';
 import { typography } from '@mui/system';
 import { Component } from 'react';
 import * as React from 'react';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import VerButtom from '../AditionalComponents/VerButtom.tsx';
 import {
     DataGrid,
@@ -18,6 +19,11 @@ export default function Reportes() {
     const [abrirModal, setAbrirModal] = React.useState(false)
     const [rowsInicial, setRowsInicial] = React.useState([{id: 0, cantProductos: 0, TotalFacturado: 0}]) 
     const [rowsModal, setRowsModal] = React.useState([]) 
+    const [rowClicked, setRowClicked] = React.useState([]);
+
+    const onRowClick = (e) => {
+        setRowClicked([e.row.id, e.row.cantProductos, e.row.TotalFacturado])
+    }
 
     const productos = [
         new Producto(1, 'Snow', 400, 3500, 10),
@@ -51,15 +57,9 @@ export default function Reportes() {
 
 
     const columns = [
-        { field: "id", headerName: "Id", width: 70 },
+        { field: "id", headerName: "Id Venta", width: 130 },
         { field: "cantProductos", headerName: "Cant. Productos Vendidos", width: 200 },
         { field: "TotalFacturado", headerName: "Total Facturado", width: 130 },
-        {
-            field: "Herramientas",
-            headerName: "Herramientas",
-            width: 130,
-            renderCell: () => <VerButtom onClick={onClickVerButton} />,
-        },
     ];
 
     useEffect(() => {
@@ -110,14 +110,9 @@ export default function Reportes() {
         return productosPorVenta;
     }
 
-    
-
-
-    function onClickVerButton() {
-        setAbrirModal(true)
+    function OnClickVerDetalle(){
+        
     }
-
-
     return (
         <>
             <h2>Reportes</h2>
@@ -125,6 +120,7 @@ export default function Reportes() {
                 <Card>
                     <CardContent>
                         <Typography textAlign={'left'} variant='h5'>Reporte de Ventas</Typography><br />
+                        <Grid textAlign={'start'}><Button variant="contained" startIcon={<VisibilityIcon />} onClick={OnClickVerDetalle} disabled={rowClicked[0] == undefined}>Ver Detalle</Button></Grid>
                         <Box py={4}>
                             <div style={{ height: 400, width: "100%" }}>
                                 <DataGrid
@@ -137,6 +133,7 @@ export default function Reportes() {
                                     pageSize={5}
                                     rows={rowsInicial}
                                     rowsPerPageOptions={[5]}
+                                    onRowClick={onRowClick}
                                 />
                             </div>
                         </Box>
