@@ -22,7 +22,7 @@ import { Modal, Box } from '@mui/material';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 130 },
+    { field: 'descripciones', headerName: 'Descripcion', width: 130 },
     {
         field: 'precioVenta',
         headerName: 'Precio Venta',
@@ -69,7 +69,8 @@ export default class Ventas extends Component {
             agregarProducto: new Producto(),
             carrito: [],
             total: 0,
-            modalVerProductos: false
+            modalVerProductos: false,
+            rows: new Producto()
         }
     }
 
@@ -80,7 +81,7 @@ export default class Ventas extends Component {
                 this.setState({
                     agregarProducto: new Producto(
                         element.id,
-                        element.descripcion,
+                        element.descripciones,
                         element.costo,
                         element.precioVenta,
                         0)
@@ -199,9 +200,9 @@ export default class Ventas extends Component {
                                     </Grid>
                                     <Grid margin={1}>
                                         <TextField
-                                            name='descripcion'
+                                            name='descripciones'
                                             label='Descripcion'
-                                            value={this.state.agregarProducto.descripcion}
+                                            value={this.state.agregarProducto.descripciones}
                                             disabled
                                             InputLabelProps={{ shrink: true }}
                                         />
@@ -210,7 +211,7 @@ export default class Ventas extends Component {
                                         <TextField
                                             name='precioVenta'
                                             label='Precio de Venta'
-                                            value={'$', this.state.agregarProducto.precioVenta}
+                                            value={'$' + this.state.agregarProducto.precioVenta}
                                             disabled
                                             InputLabelProps={{ shrink: true }}
                                         />
@@ -251,7 +252,7 @@ export default class Ventas extends Component {
                                             {this.state.carrito.map((row) => (
                                                 <TableRow key={row.id}>
                                                     <TableCell>{row.id}</TableCell>
-                                                    <TableCell>{row.descripcion}</TableCell>
+                                                    <TableCell>{row.descripciones}</TableCell>
                                                     <TableCell >{row.precioVenta}</TableCell>
                                                     <TableCell >{row.stock}</TableCell>
                                                     <TableCell >{row.precioVenta * row.stock}</TableCell>

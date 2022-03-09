@@ -12,6 +12,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSelector, useDispatch } from "react-redux";
+import { postUsuario } from "../redux/actions/UsuarioAction";
+import UsuarioSaga from '../redux/sagas/UsuarioSaga';
+import {Usuario}  from "../SistemaGestion/Models/Models.tsx";
+import { useHistory } from "react-router-dom";
+
 
 function Copyright(props) {
   return (
@@ -29,10 +35,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const dispatch = useDispatch();
+  const respuestaPOST = useSelector((state) => state.usuarioReducer?.postRespuesta)
+  const [usuarioAlta, setUsuarioAlta] = React.useState(new Usuario())
+  const history = useHistory();
+
+  const handleSubmit = () => {
+    dispatch(postUsuario(usuarioAlta))
   };
+
+  const onChangeHandler = (event => {
+    const { name, value } = event.target;
+    setUsuarioAlta({...usuarioAlta, [name]: value}); 
+  })
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,12 +72,13 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="nombre"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={onChangeHandler}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -71,8 +87,9 @@ export default function SignUp() {
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  name="lastName"
+                  name="apellido"
                   autoComplete="family-name"
+                  onChange={onChangeHandler}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -81,30 +98,33 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
+                  name="mail"
                   autoComplete="email"
+                  onChange={onChangeHandler}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="user"
+                  name="nombreUsuario"
                   label="User"
                   type="user"
                   id="user"
                   autoComplete="new-password"
+                  onChange={onChangeHandler}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="contraseña"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={onChangeHandler}
                 />
               </Grid>
               <Grid item xs={12}>

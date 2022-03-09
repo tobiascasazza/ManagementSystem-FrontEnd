@@ -15,7 +15,7 @@ function App() {
     <div className="App">
       
       <Switch>
-        <Route path='/Home' component={SistemaGestion}/>
+        <Route path='/Home/:user' component={SistemaGestion}/>
         <Route path='/NuevoUsuario' component={NuevoUsuario}/>
         <Route path='/' component={InicioSesion}></Route>
       </Switch>

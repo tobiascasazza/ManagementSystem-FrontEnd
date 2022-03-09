@@ -8,6 +8,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
+
 const theme = createTheme()
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inicio(props) {
     const classes = useStyles();
+    
 
     function onClickBoton(num){
         props.setOpcion(num);
@@ -39,11 +41,10 @@ export default function Inicio(props) {
                 alignItems="center"
             >
                 <Grid item xs={12}>
-                    <Typography className={classes.tipo1} textAlign='end'>HOLA TOBIAS, BIENVENIDO A TU CUENTA</Typography>
+                    <Typography className={classes.tipo1} textAlign='end'>Hola {props.nombre} {props.apellido}, Bienvenido a tu cuenta</Typography>
                 </Grid>
 
                 <Grid container
-                    container
                     direction="row"
                     justifyContent="center"
                     alignItems="center">

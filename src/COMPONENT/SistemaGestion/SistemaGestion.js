@@ -21,7 +21,12 @@ import Reportes from './Reportes';
 import DatosUsuario from './DatosUsuario';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useHistory } from 'react-router';
-import logocoder from '../../Imagenes/logocoder.png'
+import logocoder from '../../Imagenes/logocoder.png';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router";
+import { getUsuarioNombre } from '../redux/actions/UsuarioAction';
+import { getNombre} from "../redux/actions/NombreAction"
 
 function Copyright(props) {
   return (
@@ -88,22 +93,39 @@ const mdTheme = createTheme();
 
 export default function SistemaGestion(props) {
   
+
+  const dispatch = useDispatch();
+  const usuario = useSelector((state) => state.usuarioReducer?.usuario)
+  const nombrePrograma = useSelector((state) => state.nombreReducer?.nombre)
+ 
   const [opcion, setOpcion] = React.useState(0)
   const [pagina, setPagina] = React.useState(<Inicio/>)
   const [open, setOpen] = React.useState(true);
+  const history = useHistory();
+  const location = useLocation();
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const history = useHistory();
+  
+
+  useEffect(() => {
+    console.log(usuario)
+    
+}, [usuario]);
+
+useEffect(() => {
+      dispatch(getUsuarioNombre(location.pathname.substring(location.pathname.search("Home") + 5)))
+      dispatch(getNombre())
+  }, []);
 
   React.useEffect(()=>{
     switch(opcion){
       case 0:
-        setPagina(<Inicio setOpcion={setOpcion}/>)
+        setPagina(<Inicio setOpcion={setOpcion} nombre={usuario.nombre} apellido={usuario.apellido} />)
         break;
       case 1:
-        setPagina(<Productos/>)
+        setPagina(<Productos idUsuario={usuario.id} />)
         break;
       case 2:
         setPagina(<Ventas/>)
@@ -150,7 +172,7 @@ export default function SistemaGestion(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              MI SISTEMA DE GESTION
+              {nombrePrograma}
             </Typography>
             <IconButton color="inherit" onClick={OnClickLogOut}>
               <LogoutIcon/>
