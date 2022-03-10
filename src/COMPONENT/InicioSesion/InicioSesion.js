@@ -59,7 +59,6 @@ export default function InicioSesion() {
   };
 
   useEffect(() => {
-    console.log(userAndPassword.id)
       if(userAndPassword.id > 0){
         history.push(`/Home/${user}`);
       }

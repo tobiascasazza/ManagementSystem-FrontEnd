@@ -120,12 +120,12 @@ export default function SistemaGestion(props) {
 useEffect(() => {
       dispatch(getUsuarioNombre(location.pathname.substring(location.pathname.search("Home") + 5)))
       dispatch(getNombre())
-  },[], usuario );
+  },[, usuario] );
 
   React.useEffect(()=>{
     switch(opcion){
       case 0:
-        setPagina(<Inicio setOpcion={setOpcion} nombre={usuario.nombre} apellido={usuario.apellido} />)
+        setPagina(<Inicio setOpcion={setOpcion} />)
         break;
       case 1:
         setPagina(<Productos idUsuario={usuario.id} />)

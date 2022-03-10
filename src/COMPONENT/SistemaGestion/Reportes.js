@@ -21,32 +21,22 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function Reportes(props) {
     const dispatch = useDispatch()
-    const getProductosRespuesta = useSelector((state) => state.productoReducer?.productos)
-    const getVentasRespuesta = useSelector((state) => state.ventaReducer?.ventas)
-    const getProductosVendidosRespuesta = useSelector((state) => state.productoVendidoReducer?.productosVendidos)
+    const productos = useSelector((state) => state.productoReducer?.productos)
+    const ventas = useSelector((state) => state.ventaReducer?.ventas)
+    const productosVendidos = useSelector((state) => state.productoVendidoReducer?.productosVendidos)
     const [abrirModal, setAbrirModal] = React.useState(false)
     const [rowsInicial, setRowsInicial] = React.useState([{id: 0, cantProductos: 0, TotalFacturado: 0}]) 
     const [rowsModal, setRowsModal] = React.useState([]) 
     const [rowClicked, setRowClicked] = React.useState([]);
-    const [productos, setProductos] = React.useState([new Producto()])
-    const [ventas, setVentas] = React.useState([new Venta()])
     const [cargados, setCargados] = React.useState(false)
-
-    const [productosVendidos, setproductosVendidos] = React.useState([new ProductoVendido()])
 
 
     useEffect(() => {
         dispatch(getProductos(props.idUsuario))
         dispatch(getProductosVendidos(props.idUsuario))
         dispatch(getVentas(props.idUsuario))
+        
     }, [])
-
-    useEffect(() => {
-        setProductos(getProductosRespuesta)
-        setVentas(getVentasRespuesta)
-        setproductosVendidos(getProductosVendidosRespuesta)
-        setCargados(true)
-    }, [getProductosRespuesta, getVentasRespuesta, getProductosVendidosRespuesta])
 
 
     const onRowClick = (e) => {
@@ -61,7 +51,7 @@ export default function Reportes(props) {
     ];
 
     useEffect(() => {
-        if(cargados == true){
+        
             let rowsActualizados = [];
             ventas.forEach(venta => {
                 let row = {id: venta.id, cantProductos: 0, TotalFacturado: 0};
@@ -86,12 +76,8 @@ export default function Reportes(props) {
                rowsActualizados.push(row)
     
             });
-            console.log(rowsActualizados)
             setRowsInicial(rowsActualizados)
-            
-        }
-        
-    },[cargados])
+    },[productos, ventas, productosVendidos])
 
 
     function GetProductosPorVenta(num){

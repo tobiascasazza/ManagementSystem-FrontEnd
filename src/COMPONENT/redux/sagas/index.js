@@ -12,6 +12,5 @@ export default function* rootSaga() {
   ProductoVendidoSaga(),
   NombreSaga(),
   UsuarioSaga(),
-  VentaSaga(),
-]);
+  VentaSaga()]);
 }

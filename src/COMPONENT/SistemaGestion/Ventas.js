@@ -68,7 +68,6 @@ export default function Ventas(props) {
   }, []);
 
   useEffect(() => {
-    console.log(productos);
     setRows(productos);
   }, [productos]);
 
@@ -139,6 +138,8 @@ export default function Ventas(props) {
     setAgregarProducto({ ...agregarProducto, stock: event.target.value });
   };
 
+  
+
   useEffect(() => {
     let total1 = 0;
     carrito.map((e) => {
@@ -157,7 +158,12 @@ export default function Ventas(props) {
 
   const onClickConfirmar = () => {
     dispatch(postVenta(carrito, props.idUsuario))
+    alert("Venta Confirmada")
   }
+
+  useEffect(() => {
+    setCarrito([])
+  }, [ventaRespuesta])
 
   return (
     <>

@@ -20,8 +20,8 @@ export const getVentas = (param) => {
 };
 
 export const postVenta = (param) => {
-  const data = JSON.stringify(param[0]);
-  return InstanceDatosMedicosAxios.post(`/${param[1]}`,data, headerConfig)
+  const data = JSON.stringify(param.param1);
+  return InstanceDatosMedicosAxios.post(`/${param.param2}`,data, headerConfig)
     .then((response) => {
       return response.data;
     })

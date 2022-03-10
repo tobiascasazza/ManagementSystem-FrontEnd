@@ -114,7 +114,6 @@ export default function Productos(props) {
   };
 
   useEffect(() => {
-    console.log(productoCrear);
   }, [productoCrear]);
   const onRowClick = (e) => {
     setRowClicked(

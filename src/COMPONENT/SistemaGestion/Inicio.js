@@ -7,6 +7,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router';
+import {Usuario} from "../SistemaGestion/Models/Models.tsx"
+import { getUsuarioNombre } from '../redux/actions/UsuarioAction';
+import { useLocation } from "react-router";
+
 
 
 const theme = createTheme()
@@ -26,6 +32,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inicio(props) {
     const classes = useStyles();
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const getUsuario = useSelector((state) => state.usuarioReducer?.usuario)
+    const [usuario, setUsuario] = React.useState(new Usuario())
+
+    React.useEffect(() => {
+        if(getUsuario.id > 0){
+          setUsuario(getUsuario)
+        }
+    }, [getUsuario]);
+
+    React.useEffect(() => {
+        dispatch(getUsuarioNombre(location.pathname.substring(location.pathname.search("Home") + 5)))
+    },[])
     
 
     function onClickBoton(num){
@@ -41,7 +61,7 @@ export default function Inicio(props) {
                 alignItems="center"
             >
                 <Grid item xs={12}>
-                    <Typography className={classes.tipo1} textAlign='end'>Hola {props.nombre} {props.apellido}, Bienvenido a tu cuenta</Typography>
+                    <Typography className={classes.tipo1} textAlign='end'>Hola {usuario.nombre} {usuario.apellido}, Bienvenido a tu cuenta</Typography>
                 </Grid>
 
                 <Grid container
