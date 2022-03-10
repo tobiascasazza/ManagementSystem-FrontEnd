@@ -159,11 +159,8 @@ export default function Ventas(props) {
   const onClickConfirmar = () => {
     dispatch(postVenta(carrito, props.idUsuario))
     alert("Venta Confirmada")
-  }
-
-  useEffect(() => {
     setCarrito([])
-  }, [ventaRespuesta])
+  }
 
   return (
     <>
