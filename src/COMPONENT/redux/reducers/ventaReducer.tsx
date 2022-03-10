@@ -2,7 +2,6 @@ import * as types from "../consts/actionTypes";
 import { Venta } from "../../SistemaGestion/Models/Models.tsx";
 const ExampleState = {
   ventas: Array<Venta>(),
-  venta: Venta,
   getRespuesta: undefined,
 };
 
@@ -16,7 +15,7 @@ export function ventaReducer(state = ExampleState, action: any) {
       break;
 
     case types.POST_VENTAS_SUCCESS:
-      return { ...state, venta: action.response };
+      return { ...state, getRespuesta: true };
       break;
     case types.POST_VENTAS_FAILED:
       return { ...state, getRespuesta: false };

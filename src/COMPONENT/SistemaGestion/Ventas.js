@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { Modal, Box } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductos } from "../redux/actions/ProductoAction";
+import { postVenta } from "../redux/actions/VentaAction";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -54,12 +55,13 @@ const style = {
 
 export default function Ventas(props) {
   const [agregarProducto, setAgregarProducto] = useState(new Producto());
-  const [carrito, setCarrito] = useState([new Producto()]);
+  const [carrito, setCarrito] = useState([]);
   const [total, setTotal] = useState(0);
   const [modalVerProductos, setModalVerProductos] = useState(false);
-  const [rows, setRows] = useState([new Producto()]);
+  const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productoReducer?.productos);
+  const ventaRespuesta = useSelector((state) => state.ventaReducer?.getRespuesta);
 
   useEffect(() => {
     dispatch(getProductos(props.idUsuario));
@@ -92,18 +94,24 @@ export default function Ventas(props) {
   };
 
   const cambiarProducto = (i) => {
-    const yaPaso = false;
-    carrito.map((item, j) => {
+    let yaPaso = false;
+    let carritoNuevo = carrito.map((item, j) => {
       if (j === i && !yaPaso) {
-        yaPaso = true;
-        setCarrito({...carrito, stock: parseInt(item.stock) + parseInt(agregarProducto.stock)})
-      } else {
-        return setCarrito({...carrito, agregarProducto});
+          yaPaso = true;
+          item.stock = (parseInt(item.stock) + parseInt(agregarProducto.stock));
+          return item;
       }
-    });
+      else {
+          return item;
+      }
+  })
+  setCarrito(carritoNuevo);
   };
 
   const onClickAgregar = () => {
+    if(agregarProducto.id == 0){
+      return 
+    }
     var repetido = false;
     carrito.map((e, index) => {
       if (e.id == agregarProducto.id) {
@@ -113,7 +121,7 @@ export default function Ventas(props) {
     });
 
     if (!repetido) {
-      setCarrito({ ...carrito, agregarProducto });
+      setCarrito([...carrito, agregarProducto]);
     }
 
     setAgregarProducto(new Producto(0, "", 0, 0, 0));
@@ -145,6 +153,11 @@ export default function Ventas(props) {
   const onClickSalirModal = () => {
     setModalVerProductos(false);
   };
+
+
+  const onClickConfirmar = () => {
+    dispatch(postVenta(carrito, props.idUsuario))
+  }
 
   return (
     <>
@@ -259,7 +272,7 @@ export default function Ventas(props) {
             </Card>
           </Grid>
           <Grid textAlign={"end"}>
-            <Button variant="contained">Confirmar Venta</Button>
+            <Button variant="contained" onClick={onClickConfirmar} >Confirmar Venta</Button>
           </Grid>
         </CardContent>
       </Card>
