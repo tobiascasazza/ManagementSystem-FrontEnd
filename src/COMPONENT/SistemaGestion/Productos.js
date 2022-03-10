@@ -81,8 +81,8 @@ export default function Productos(props) {
   useEffect(() => {
     dispatch(getProductos(props.idUsuario));
   }, []);
+  
   useEffect(() => {
-    console.log(productos);
     setRows(productos);
   }, [productos]);
 

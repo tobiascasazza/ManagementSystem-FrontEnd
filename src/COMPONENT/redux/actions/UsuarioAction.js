@@ -24,5 +24,6 @@ export function postUsuario(param) {
 export function putUsuario(param) {
   return {
     type: actionTypes.PUT_USUARIO,
+    payload: param,
   };
 }

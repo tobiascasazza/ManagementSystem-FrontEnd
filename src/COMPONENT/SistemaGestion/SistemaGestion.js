@@ -27,6 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import { getUsuarioNombre } from '../redux/actions/UsuarioAction';
 import { getNombre} from "../redux/actions/NombreAction"
+import { Usuario } from './Models/Models.tsx';
 
 function Copyright(props) {
   return (
@@ -95,12 +96,13 @@ export default function SistemaGestion(props) {
   
 
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.usuarioReducer?.usuario)
+  const getUsuario = useSelector((state) => state.usuarioReducer?.usuario)
   const nombrePrograma = useSelector((state) => state.nombreReducer?.nombre)
  
   const [opcion, setOpcion] = React.useState(0)
   const [pagina, setPagina] = React.useState(<Inicio/>)
   const [open, setOpen] = React.useState(true);
+  const [usuario, setUsuario] = React.useState(new Usuario())
   const history = useHistory();
   const location = useLocation();
   const toggleDrawer = () => {
@@ -110,14 +112,15 @@ export default function SistemaGestion(props) {
   
 
   useEffect(() => {
-    console.log(usuario)
-    
-}, [usuario]);
+    if(getUsuario.id > 0){
+      setUsuario(getUsuario)
+    }
+}, [getUsuario]);
 
 useEffect(() => {
       dispatch(getUsuarioNombre(location.pathname.substring(location.pathname.search("Home") + 5)))
       dispatch(getNombre())
-  }, []);
+  },[], usuario );
 
   React.useEffect(()=>{
     switch(opcion){
@@ -128,13 +131,13 @@ useEffect(() => {
         setPagina(<Productos idUsuario={usuario.id} />)
         break;
       case 2:
-        setPagina(<Ventas/>)
+        setPagina(<Ventas idUsuario={usuario.id}/>)
         break;
       case 3:
-        setPagina(<Reportes/>)
+        setPagina(<Reportes idUsuario={usuario.id}/>)
         break;
       case 4:
-        setPagina(<DatosUsuario/>)
+        setPagina(<DatosUsuario datosUsuario={usuario} />)
         break;
     }
   },[opcion])

@@ -9,8 +9,8 @@ const headerConfig = {
 };
 
 export const getVentas = (param) => {
-  const data = JSON.stringify(param.param1);
-  return InstanceDatosMedicosAxios.get(`/${param}`,data, headerConfig)
+  const data = JSON.stringify(param);
+  return InstanceDatosMedicosAxios.get(`/${param}`, headerConfig)
     .then((response) => {
       return response.data;
     })

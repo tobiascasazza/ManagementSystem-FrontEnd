@@ -1,31 +1,35 @@
-import styleActualizarDatos from '../styles/styleActualizarDatos';
 import { Typography } from '@mui/material';
-import { typography } from '@mui/system';
 import * as React from 'react';
 import {
     Grid,
     Card,
     CardContent,
-    FormGroup,
-    FormControlLabel,
-    Checkbox,
     Button,
     TextField,
-    FormControl,
-    InputLabel,
-    Salect,
 } from '@mui/material';
-import { Background } from 'devextreme-react/range-selector';
-import { Usuario } from './Models/Models.tsx';
 import { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { putUsuario, getUsuarioNombre } from '../redux/actions/UsuarioAction';
+import { useHistory } from 'react-router-dom';
 
-export default function DatosUsuario() {
-    
-    const[usuario, setUsuario] = useState(new Usuario(1, "Tobias", "Casazza", "tcasazza", "SoyTobiasCasazza", "tobiascasazza@gmail.com")) ;
+export default function DatosUsuario(props) {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const putRespuesta = useSelector((state) => state.usuarioReducer?.putRespuesta);
+    const getUsuario = useSelector((state) => state.usuarioReducer?.usuario)
+    const[usuario, setUsuario] = useState(props.datosUsuario) 
 
     const enviarDatos = () => {
-
+        dispatch(putUsuario(usuario))
+        alert("Usuario Modificado")
     }
+
+
+    React.useEffect(() => {
+        if(usuario.id == 0){
+            dispatch(getUsuarioNombre(props.datosUsuario.nombreUsuario))
+        }
+    },[usuario])
 
     const onChangeUsuario = (e) => {
         const { name, value } = e.target;
@@ -133,7 +137,7 @@ export default function DatosUsuario() {
 
                         <Grid item xs={12} md={12}>
                             <Grid container justifyContent="center">
-                                <Button Id="btn" color="primary" variant="contained"
+                                <Button id="btn" color="primary" variant="contained"
                                     /* disabled={!formValido } */
                                     onClick={enviarDatos}
                                     className={`btn-primary`} >

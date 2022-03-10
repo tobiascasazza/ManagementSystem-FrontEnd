@@ -1,16 +1,16 @@
 import * as actionTypes from "../consts/actionTypes";
 
-export function getVentas(param1, param2) {
+export function getVentas(param) {
   return {
     type: actionTypes.GET_VENTAS,
-    payload: {param1 , param2}
+    payload: param
   };
 }
 
-export function postVenta(param) {
+export function postVenta(param1, param2) {
   return {
     type: actionTypes.POST_VENTAS,
-    payload: param,
+    payload: {param1, param2} ,
   };
 }
 
