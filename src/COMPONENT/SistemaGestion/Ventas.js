@@ -162,6 +162,10 @@ export default function Ventas(props) {
     setCarrito([])
   }
 
+  useEffect(() => {
+    
+  }, [ventaRespuesta])
+
   return (
     <>
       <h2>Ventas</h2>
