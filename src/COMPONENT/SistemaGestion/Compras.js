@@ -96,6 +96,14 @@ export default function SistemaGestion(props) {
   
 
   const dispatch = useDispatch();
+  const getUsuario = useSelector((state) => state.usuarioReducer?.usuario)
+  const nombrePrograma = useSelector((state) => state.nombreReducer?.nombre)
+ 
+  const [opcion, setOpcion] = React.useState(0)
+  const [pagina, setPagina] = React.useState(<Inicio/>)
+  const [open, setOpen] = React.useState(true);
+  const [usuario, setUsuario] = React.useState(new Usuario())
+  const history = useHistory();
   const location = useLocation();
   const toggleDrawer = () => {
     setOpen(!open);
